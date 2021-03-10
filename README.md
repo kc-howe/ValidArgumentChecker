@@ -23,5 +23,15 @@ Type a logical argument or expression at the prompt and press `Enter`. The argum
  - Operator precedence is as shown above.
  - Spaces can be used freely to improve readability.
 
+## Example
+
+**Premise 1:**  Either it is cloudy outside, or it is not raining.
+**Premise 2:**  It is raining.
+**Conclusion:** Therefore, it is cloudy outside.
+
+Using `&` to connect our premises and `>` to imply our conclusion, this argument can be written:
+
+`((C | ~R) & R) > C`
+
 ## Repl
 A repl exists for this project for the sake of convenience. If you'd like to check it out, follow [this link](https://repl.it/talk/share/Valid-Argument-Checker/127450).
