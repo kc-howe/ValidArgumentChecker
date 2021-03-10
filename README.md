@@ -26,7 +26,9 @@ Type a logical argument or expression at the prompt and press `Enter`. The argum
 ## Example
 
 **Premise 1:**  Either it is cloudy outside, or it is not raining.
+
 **Premise 2:**  It is raining.
+
 **Conclusion:** Therefore, it is cloudy outside.
 
 Using `&` to connect our premises and `>` to imply our conclusion, this argument can be written:
