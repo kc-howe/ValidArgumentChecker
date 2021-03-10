@@ -377,6 +377,12 @@ int main() {
 			cout << "NOTES:\n" <<
 				" - Operator precedence is as shown above.\n" << 
 				" - Spaces can be used freely to improve readability.\n" << endl;
+			cout << "EXAMPLE:\n\n" <<
+        			"Premise 1:  Either it is cloudy outside, or it is not raining.\n" <<
+      				"Premise 2:  It is raining.\n" <<
+       				"Conclusion: Therefore, it is cloudy outside.\n\n" <<
+       				"Using \'&\' to connect our premises and \'>\' to imply our conclusion, this argument can be written:\n\n" <<
+        			"((C | ~R) & R) > C\n" << endl;
 		}
 		else {
 			try {
