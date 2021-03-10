@@ -367,7 +367,7 @@ int main() {
 				"The argument will be evaluated for logical validity (i.e. tautology via a truth table) " <<
 				"and the result will be printed to the console.\n" << endl;
 			cout << "SYNTAX:\n" <<
-				"a-Z - propositions\n" <<
+				" a-Z - propositions\n" <<
 				" ( ) - parentheses\n" <<
 				"  ~  - not\n" << 
 				"  &  - and\n" << 
