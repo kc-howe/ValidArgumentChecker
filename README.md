@@ -2,7 +2,7 @@
 Checks first-order symbolic logical arguments for validity via the command line.
 
 ## Instructions
-Type a logical argument or expression at the prompt and press ENTER. The argument will be evaluated for logical validity (i.e. tautology via a truth table) and the result will be printed to the console.
+Type a logical argument or expression at the prompt and press `Enter`. The argument will be evaluated for logical validity (i.e. tautology via a truth table) and the result will be printed to the console.
 
 ## Syntax
 ` a-Z` - propositions
