@@ -6,11 +6,17 @@ Type a logical argument or expression at the prompt and press ENTER. The argumen
 
 ## Syntax
 ` a-Z` - propositions
+
 ` ( )` - parentheses
+
 `  ~ ` - not
+
 `  & ` - and
+
 `  | ` - or
+
 `  > ` - if-then
+
 `  = ` - if and only if
 
 ## Notes
