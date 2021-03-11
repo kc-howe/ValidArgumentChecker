@@ -323,7 +323,10 @@ bool incrementAtomValues(vector<char>* atoms, map<char, bool>* atomValues) {
 			firstFalse = i;
 		}
 	}
-
+	
+	if (lastFalse < 0) {
+		return false;
+	}
 	if (lastFalse < firstTrue) {
 		for (int i = 0; i < atoms->size(); i++) {
 			atomValues->at(atoms->at(i)) = false;
@@ -340,7 +343,7 @@ bool incrementAtomValues(vector<char>* atoms, map<char, bool>* atomValues) {
 		atomValues->at(atoms->at(lastFalse)) = true;
 	}
 
-	return firstFalse > -1;
+	return true;
 }
 
 // Checks the argumentative validity of a sentence
