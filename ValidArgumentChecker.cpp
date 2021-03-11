@@ -323,8 +323,7 @@ bool incrementAtomValues(vector<char>* atoms, map<char, bool>* atomValues) {
 			firstFalse = i;
 		}
 	}
-	
-	if (lastFalse < 0) {
+	if (firstFalse < 0) {
 		return false;
 	}
 	if (lastFalse < firstTrue) {
@@ -365,7 +364,6 @@ bool evaluateSentence(string input) {
 	// Cycle through all possible truth values and evaluate
 	bool isValid = true;
 	bool incrementAgain = true;
-	int indexTrue = atoms.size() - 1;
 
 	while (isValid && incrementAgain) {
 		isValid = sentence->evaluate(&atomValues);
@@ -431,6 +429,7 @@ int main() {
 			}
 			catch (exception e) {
 				cout << "ERROR: " << e.what() << endl;
+				continue;
 			}
 			if (!isValid) {
 				cout << "in";
