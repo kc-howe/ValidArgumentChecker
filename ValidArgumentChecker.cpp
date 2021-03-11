@@ -124,6 +124,10 @@ public:
 				throw sex;
 			}
 			return ((this->leftArg)->evaluate(atomValues) && (this->rightArg)->evaluate(atomValues)) || !((this->leftArg)->evaluate(atomValues) || (this->rightArg)->evaluate(atomValues));
+		case '0':
+			return false;
+		case '1':
+			return true;
 		default:
 			if (isalpha(this->symbol)) {
 				return atomValues->at(this->symbol);
@@ -165,32 +169,24 @@ queue<char>* polishParse(string inputSentence) {
 	for (int i = 0; i < inputSentence.length(); i++) {
 		token = inputSentence.at(i);
 
-		// If token is alpha, push it to output queue
-		if (isalpha(token)) {
+		switch (token) {
+
+		// Push tautology and contradiction atoms to output
+		case '0':
 			output.push(token);
-		}
+			break;
 
-		// If the next token is an operator. . .
-		else if (precedence.find(token) != precedence.end()) {
-
-			// Pop operators from stack onto the output queue if they take precedence
-			while ((!operators.empty()) && (precedence[operators.top()] >= precedence[token]) && token != '(') {
-				output.push(operators.top());
-				operators.pop();
-			}
-
-			// Push the current operator onto the stack
-			operators.push(token);
-
-		}
+		case '1':
+			output.push(token);
+			break;
 
 		// If token is left paren, push to stack
-		else if (token == '(') {
+		case '(':
 			operators.push(token);
-		}
+			break;
 
 		// If token is right paren, push operators until left paren is reached
-		else if (token == ')') {
+		case ')':
 			while (!operators.empty() && operators.top() != '(') {
 				output.push(operators.top());
 				operators.pop();
@@ -201,13 +197,39 @@ queue<char>* polishParse(string inputSentence) {
 				throw pex;
 			}
 			operators.pop();
-		}
+			break;
 
 		// Otherwise, if it isn't whitespace, it's bad syntax
-		else if (token != ' ') {
-			throw sex;
-		}
+		case ' ':
+			break;
 
+		default:
+			// If token is alpha, push it to output queue
+			if (isalpha(token)) {
+				output.push(token);
+			}
+
+			// If the next token is an operator. . .
+			else if (precedence.find(token) != precedence.end()) {
+
+				// Pop operators from stack onto the output queue if they take precedence
+				while ((!operators.empty()) && (precedence[operators.top()] >= precedence[token]) && token != '(') {
+					output.push(operators.top());
+					operators.pop();
+				}
+
+				// Push the current operator onto the stack
+				operators.push(token);
+
+			}
+
+			// Syntax includes unhandled character
+			else {
+				throw sex;
+			}
+
+			break;
+		}
 	}
 
 	// If no more tokens to read, dump leftover operators
@@ -231,8 +253,8 @@ Sentence* constructSentence(queue<char>* polish) {
 
 	while (!polish->empty()) {
 
-		// If next token is alpha, push to stack
-		if (isalpha(polish->front())) {
+		// If next token is atomic, push to stack
+		if (isalpha(polish->front()) || polish->front() == '0' || polish->front() == '1') {
 			Sentence* atom = new Sentence(polish->front());
 			components.push(atom);
 			polish->pop();
@@ -355,7 +377,7 @@ int main() {
 	string argument;
 	bool isValid;
 
-	cout << "Type an argument to get started (type 'help' for help):" << endl;
+	cout << "Type an argument to get started (type 'help' for help or 'quit' to quit):" << endl;
 
 	while (1) {
 		cout << "> ";
@@ -368,6 +390,8 @@ int main() {
 				"and the result will be printed to the console.\n" << endl;
 			cout << "SYNTAX:\n" <<
 				" a-Z - propositions\n" <<
+				"  0  - contradiction\n" <<
+				"  1  - tautology\n" <<
 				" ( ) - parentheses\n" <<
 				"  ~  - not\n" << 
 				"  &  - and\n" << 
@@ -378,11 +402,17 @@ int main() {
 				" - Operator precedence is as shown above.\n" << 
 				" - Spaces can be used freely to improve readability.\n" << endl;
 			cout << "EXAMPLE:\n\n" <<
-        			"Premise 1:  Either it is cloudy outside, or it is not raining.\n" <<
-      				"Premise 2:  It is raining.\n" <<
-       				"Conclusion: Therefore, it is cloudy outside.\n\n" <<
-       				"Using \'&\' to connect our premises and \'>\' to imply our conclusion, this argument can be written:\n\n" <<
-        			"((C | ~R) & R) > C\n" << endl;
+				"Premise 1:  Either it is cloudy outside, or it is not raining.\n" <<
+				"Premise 2:  It is raining.\n" <<
+				"Conclusion: Therefore, it is cloudy outside.\n\n" <<
+				"Using \'&\' to connect our premises and \'>\' to imply our conclusion, this argument can be written:\n\n" <<
+				"((C | ~R) & R) > C\n\n" <<
+				"We can also use the '=' operator to validate the logical equivalence of two expressions:\n\n" <<
+				"(~P | Q) = (P > Q)\n" << 
+				"(P & ~P) = 0\n" << endl;
+		}
+		else if (argument == "quit") {
+			break;
 		}
 		else {
 			try {
@@ -405,5 +435,4 @@ int main() {
 			cout << "valid" << endl;
 		}
 	}
-
 }
