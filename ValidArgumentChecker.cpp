@@ -405,7 +405,9 @@ int main() {
 				"  >  - if-then\n" << 
 				"  =  - if and only if\n" << endl;
 			cout << "NOTES:\n" <<
-				" - Operator precedence is as shown above.\n" << 
+				" - Operator precedence is as shown above.\n" <<
+				" - Operators of equal precedence are read from left to right.\n" <<
+        			"    - e.g. (P > Q > R) = ((P > Q) > R)\n" <<
 				" - Spaces can be used freely to improve readability.\n" << endl;
 			cout << "EXAMPLE:\n\n" <<
 				"Premise 1:  Either it is cloudy outside, or it is not raining.\n" <<
