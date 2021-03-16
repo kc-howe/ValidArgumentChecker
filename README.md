@@ -1,7 +1,7 @@
 # ValidArgumentChecker
 Checks zeroth-order symbolic logical arguments for validity via the command line.
 
-This project was written for personal educational purposes at the direction of my professor Michelle Cheatham, mostly to dip my toes into some data structures applications. As a result, the approach taken here is probably overkill from an efficiency standpoint. Feel free to spin up the Repl at the bottom of this page to run the code without having to download and compile it.
+This project was written for personal educational purposes at the direction of my professor Michelle Cheatham, mostly to dip my toes into some data structures applications. As a result, the approach taken here is probably overkill, and that's okay; I certainly learned more doing it the way that I did. Feel free to spin up the Repl at the bottom of this page to run the code without having to download and compile it.
 
 ## Instructions
 Type a logical argument or expression at the prompt and press `Enter`. The argument will be evaluated for logical validity (i.e. tautology via a truth table) and the result will be printed to the console.
