@@ -25,6 +25,12 @@ Type a logical argument or expression at the prompt and press `Enter`. The argum
 
 `=` - if and only if
 
+## Commands
+`help` Prints help page.
+`show-table` Prints an abbreviated truth table for the previous argument.
+`show-tree` Prints the syntax tree for the previous argument.
+`quit` Ends the program.
+
 ## Notes
  - Operator precedence is as shown above
  - Operators of equal precedence are read from left to right.
