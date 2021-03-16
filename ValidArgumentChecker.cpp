@@ -5,6 +5,7 @@
 #include <cctype>
 #include <iostream>
 #include <map>
+#include <math.h>
 #include <stack>
 #include <string>
 #include <queue>
@@ -135,6 +136,24 @@ public:
 			throw sex;
 		}
 	}
+
+	void print(string prefix = "", bool isLeft = true) {
+		cout << prefix << "`-(" << this->getRootSymbol() << ")" << endl;
+
+		if (isLeft) {
+			prefix += "   ";
+		}
+		else {
+			prefix += "|  ";
+		}
+
+		if (this->getRightArg()) {
+			this->getRightArg()->print(prefix, false);
+		}
+		if (this->getLeftArg()) {
+			this->getLeftArg()->print(prefix, true);
+		}
+	}
 };
 
 
@@ -170,12 +189,12 @@ queue<char>* polishParse(string inputSentence) {
 		token = inputSentence.at(i);
 
 		switch (token) {
-				
+
 		// Push unary operator ~ to operator stack
 		case '~':
 			operators.push(token);
 			break;
-				
+
 		// Push tautology and contradiction atoms to output
 		case '0':
 			output.push(token);
@@ -204,7 +223,7 @@ queue<char>* polishParse(string inputSentence) {
 			operators.pop();
 			break;
 
-		// Otherwise, if it isn't whitespace, it's bad syntax
+		// If white space, ignore
 		case ' ':
 			break;
 
@@ -378,14 +397,54 @@ bool evaluateSentence(string input) {
 	return isValid;
 }
 
+void printTable(string input) {
+	queue<char>* polish = polishParse(input);
+	Sentence* sentence = constructSentence(polish);
+
+	vector<char> atoms;
+	static map<char, bool> atomValues;
+
+	// Find all atoms in sentence, initialize their truth values
+	for (int i = 0; i < input.length(); i++) {
+		if (isalpha(input[i]) && find(atoms.begin(), atoms.end(), input[i]) == atoms.end()) {
+			atoms.push_back(input[i]);
+			atomValues[input[i]] = false;
+		}
+	}
+
+	// Print table header
+	for (int i = 0; i < atoms.size(); i++) {
+		cout << " " << atoms[i] << " |";
+	}
+	cout << " ARG " << endl;
+	for (int i = 0; i < atoms.size(); i++) {
+		cout << "----";
+	}
+	cout << "-----" << endl;
+
+	// Cycle through all possible truth values and evaluate, print to row
+	bool isValid;
+	for (int i = 0; i < pow(2, atoms.size()); i++) {
+		for (int j = 0; j < atoms.size(); j++) {
+			cout << " " << (atomValues[atoms[j]] ? 1 : 0) << " |";
+		}
+		isValid = sentence->evaluate(&atomValues);
+		cout << "  " << (isValid ? 1 : 0) << endl;
+
+		incrementAtomValues(&atoms, &atomValues);
+	}
+}
+
 int main() {
 
+	string prevArg = "";
 	string argument;
 	bool isValid;
 
 	cout << "Type an argument to get started (type 'help' for help or 'quit' to quit):" << endl;
 
 	while (1) {
+
 		cout << "> ";
 		getline(cin, argument);
 
@@ -404,10 +463,15 @@ int main() {
 				"  |  - or\n" << 
 				"  >  - if-then\n" << 
 				"  =  - if and only if\n" << endl;
+			cout << "COMMANDS:\n" <<
+				"help         Prints this page.\n" <<
+				"show-table   Prints an abbreviated truth table for the previous argument.\n" <<
+				"show-tree    Prints the syntax tree for the previous argument.\n"
+				"quit         Ends the program.\n" << endl;
 			cout << "NOTES:\n" <<
-				" - Operator precedence is as shown above.\n" <<
+				" - Operator precedence is in the same order as shown above.\n" <<
 				" - Operators of equal precedence are read from left to right.\n" <<
-        			"    - e.g. (P > Q > R) = ((P > Q) > R)\n" <<
+				"    - e.g. (P > Q > R) = ((P > Q) > R)\n" <<
 				" - Spaces can be used freely to improve readability.\n" << endl;
 			cout << "EXAMPLE:\n\n" <<
 				"Premise 1:  Either it is cloudy outside, or it is not raining.\n" <<
@@ -421,6 +485,22 @@ int main() {
 		}
 		else if (argument == "quit") {
 			break;
+		}
+		else if (argument == "show-tree") {
+			if (prevArg != "") {
+				constructSentence(polishParse(prevArg))->print();
+			}
+			else {
+				cout << "No argument found." << endl;
+			}
+		}
+		else if (argument == "show-table") {
+			if (prevArg != "") {
+				printTable(prevArg);
+			}
+			else {
+				cout << "No argument found." << endl;
+			}
 		}
 		else if (argument == "") {
 			continue;
@@ -445,6 +525,9 @@ int main() {
 				cout << "in";
 			}
 			cout << "valid" << endl;
+
+			// Store argument for use in print commands
+			prevArg = argument;
 		}
 	}
 }
