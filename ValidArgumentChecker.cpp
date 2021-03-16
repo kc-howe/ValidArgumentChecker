@@ -426,7 +426,7 @@ void printTable(string input) {
 	bool isValid;
 	for (int i = 0; i < pow(2, atoms.size()); i++) {
 		for (int j = 0; j < atoms.size(); j++) {
-			cout << " " << (atomValues[atoms[j]] ? 1 : 0) << " |";
+			cout << " " << (atomValues[atoms[j]] ? 1 : 0) << "  ";
 		}
 		isValid = sentence->evaluate(&atomValues);
 		cout << "  " << (isValid ? 1 : 0) << endl;
