@@ -420,6 +420,9 @@ int main() {
 		else if (argument == "quit") {
 			break;
 		}
+		else if (argument == "") {
+			continue;
+		}
 		else {
 			try {
 				isValid = evaluateSentence(argument);
