@@ -170,7 +170,12 @@ queue<char>* polishParse(string inputSentence) {
 		token = inputSentence.at(i);
 
 		switch (token) {
-
+				
+		// Push unary operator ~ to operator stack
+		case '~':
+			operators.push(token);
+			break;
+				
 		// Push tautology and contradiction atoms to output
 		case '0':
 			output.push(token);
