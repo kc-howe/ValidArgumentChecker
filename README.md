@@ -26,7 +26,7 @@ Type a logical argument or expression at the prompt and press `Enter`. The argum
 ## Notes
  - Operator precedence is as shown above
  - Operators of equal precedence are read from left to right.
-  - e.g. `(P > Q > R) = ((P > Q) > R)` 
+   - e.g. `(P > Q > R) = ((P > Q) > R)` 
  - Spaces can be used freely to improve readability.
 
 ## Example
