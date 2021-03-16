@@ -27,8 +27,11 @@ Type a logical argument or expression at the prompt and press `Enter`. The argum
 
 ## Commands
 `help` Prints help page.
+
 `show-table` Prints an abbreviated truth table for the previous argument.
+
 `show-tree` Prints the syntax tree for the previous argument.
+
 `quit` Ends the program.
 
 ## Notes
