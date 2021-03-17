@@ -54,7 +54,7 @@ Type a logical argument or expression at the prompt and press `Enter`. The argum
 
 **Conclusion:** Therefore, it is cloudy outside.
 
-Using ',' to separate our premises, '{ }' to group them, and '/' to draw our conclusion, this argument can be written:
+Using `,` to separate our premises, `{ }` to group them, and `/` to draw our conclusion, this argument can be written:
 
 `{C | ~R, R} / C`
 
