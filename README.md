@@ -13,6 +13,8 @@ Type a logical argument or expression at the prompt and press `Enter`. The argum
 
 `1` - tautology
 
+`{ }` - brackets
+
 `( )` - parentheses
 
 `~` - not
@@ -24,6 +26,10 @@ Type a logical argument or expression at the prompt and press `Enter`. The argum
 `>` - if-then
 
 `=` - if and only if
+
+`,` - separator
+
+`/` - quotient (deductive transition)
 
 ## Commands
 `help` Prints help page.
@@ -48,9 +54,9 @@ Type a logical argument or expression at the prompt and press `Enter`. The argum
 
 **Conclusion:** Therefore, it is cloudy outside.
 
-Using `&` to connect our premises and `>` to imply our conclusion, this argument can be written:
+Using ',' to separate our premises, '{ }' to group them, and '/' to draw our conclusion, this argument can be written:
 
-`((C | ~R) & R) > C`
+`{C | ~R, R} / C`
 
 We can also use the `=` operator to validate the logical equivalence of two expressions:
 
