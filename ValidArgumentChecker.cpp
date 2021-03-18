@@ -135,16 +135,6 @@ public:
 				throw sex;
 			}
 			return ((this->leftArg)->evaluate(atomValues) && (this->rightArg)->evaluate(atomValues)) || !((this->leftArg)->evaluate(atomValues) || (this->rightArg)->evaluate(atomValues));
-		case ',':
-			if (!this->leftArg || !this->rightArg) {
-				throw sex;
-			}
-			return (this->leftArg)->evaluate(atomValues) && (this->rightArg)->evaluate(atomValues);
-		case '/':
-			if (!this->leftArg || !this->rightArg) {
-				throw sex;
-			}
-			return !(this->leftArg)->evaluate(atomValues) || (this->rightArg)->evaluate(atomValues);
 		case '0':
 			return false;
 		case '1':
@@ -181,6 +171,18 @@ bool isAtomic(char c) {
 	return isalpha(c) || c == '0' || c == '1';
 }
 
+// Translates elements of meta-language to elements of object language
+char cleanMeta(char c) {
+	switch (c) {
+	case ',':
+		return '&';
+	case '/':
+		return '>';
+	default:
+		return c;
+	}
+}
+
 // Just returns a map of op precedences
 map<char, int>* getOperatorPrecedence() {
 	static map<char, int> p;
@@ -211,13 +213,16 @@ queue<char>* polishParse(string inputSentence) {
 			}
 		}
 		else if (inputSentence[i] == '{') {
-			if (bracketIndex > -1 || bracketIndex > quotientIndex) {
+			if (bracketIndex > -1 ) {
 				throw sex;
 			}
 			else {
 				bracketIndex = i;
 			}
 		}
+	}
+	if (bracketIndex > quotientIndex) {
+		throw sex;
 	}
 
 	// Using Shunting-Yard for the conversion
@@ -254,7 +259,7 @@ queue<char>* polishParse(string inputSentence) {
 				if (operators.top() == ',') {
 					throw sex;
 				}
-				output.push(operators.top());
+				output.push(cleanMeta(operators.top()));
 				operators.pop();
 			}
 
@@ -276,7 +281,7 @@ queue<char>* polishParse(string inputSentence) {
 				if (operators.top() == '}') {
 					throw sex;
 				}
-				output.push(operators.top());
+				output.push(cleanMeta(operators.top()));
 				operators.pop();
 			}
 
@@ -297,7 +302,7 @@ queue<char>* polishParse(string inputSentence) {
 				if (i < inputSentence.length() - 1 && isAtomic(inputSentence[i + 1])) {
 					throw sex;
 				}
-				output.push(token);
+				output.push(cleanMeta(token));
 			}
 
 			// If the next token is an operator. . .
@@ -305,7 +310,7 @@ queue<char>* polishParse(string inputSentence) {
 
 				// Pop operators from stack onto the output queue if they take precedence
 				while ((!operators.empty()) && (precedence[operators.top()] >= precedence[token]) && token != '(') {
-					output.push(operators.top());
+					output.push(cleanMeta(operators.top()));
 					operators.pop();
 				}
 
@@ -326,7 +331,12 @@ queue<char>* polishParse(string inputSentence) {
 	// If no more tokens to read, dump leftover operators
 	while (!operators.empty()) {
 		if (operators.top() != '(' && operators.top() != ')') {
-			output.push(operators.top());
+			if (operators.top() != '{') {
+				output.push(cleanMeta(operators.top()));
+			}
+			else {
+				throw bex;
+			}
 		}
 		else {
 			throw pex;
@@ -585,6 +595,10 @@ int main() {
 			}
 			catch (parexception p) {
 				cout << "ERROR: " << p.what() << endl;
+				continue;
+			}
+			catch (braexception b) {
+				cout << "ERROR: " << b.what() << endl;
 				continue;
 			}
 			catch (exception e) {
